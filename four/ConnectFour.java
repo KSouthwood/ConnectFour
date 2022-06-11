@@ -5,8 +5,10 @@ import java.awt.*;
 import java.util.List;
 
 public class ConnectFour extends JFrame {
-    private static final int WIDTH =  420;
+    private static final int WIDTH  = 420;
     private static final int HEIGHT = 360;
+
+    private final ConnectFourController controller = new ConnectFourController();
 
     public ConnectFour() {
         initWindow();
@@ -34,9 +36,10 @@ public class ConnectFour extends JFrame {
     }
 
     private JButton createButton(final String name) {
-        var button = new JButton(name);
+        var button = new JButton(" ");
         button.setName("Button" + name);
         button.setFocusPainted(false);
+        button.addActionListener(controller);
         return button;
     }
 }

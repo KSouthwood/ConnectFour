@@ -32,7 +32,7 @@ public class ConnectFour extends JFrame {
     }
 
     private void addComponents() {
-        JButton[][] buttonArray = new JButton[COLS][ROWS];
+        JButton[][] buttonArray = new JButton[ROWS][COLS];
 
         List<String> rowNames = List.of("6", "5", "4", "3", "2", "1");
         List<String> colNames = List.of("A", "B", "C", "D", "E", "F", "G");
@@ -41,7 +41,7 @@ public class ConnectFour extends JFrame {
             for (int col = 0; col < COLS; col++) {
                 var button = createButton(colNames.get(col) + rowNames.get(row));
                 this.add(button);
-                buttonArray[col][row] = button;
+                buttonArray[row][col] = button;
             }
         }
 
@@ -56,6 +56,8 @@ public class ConnectFour extends JFrame {
         button.setName("Button" + name);
         button.addActionListener(e -> controller.playCell((JButton) e.getSource()));
         button.setFocusPainted(false);
+        button.setForeground(Color.BLACK);
+        button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         return button;
     }
 

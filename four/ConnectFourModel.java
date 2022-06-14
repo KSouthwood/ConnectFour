@@ -18,7 +18,16 @@ public class ConnectFourModel {
         this.buttonArray = array;
     }
 
+    /**
+     * Play in the column of the clicked cell
+     *
+     * Get the column of the clicked cell, then play in the first available cell starting at the bottom. If the column
+     * is full, don't play at all and the player has to go again.
+     *
+     * @param clickedButton cell that was clicked by the player
+     */
     void playCell(final JButton clickedButton) {
+        // ignore the click if the game is over
         if (gameOver) {
             return;
         }
@@ -39,6 +48,12 @@ public class ConnectFourModel {
         }
     }
 
+    /**
+     * Reset the game.
+     *
+     * Changes all the buttons back to default text and color. Also set the game control variables back to initial
+     * values.
+     */
     void resetBoard() {
         for (JButton[] jButtons : buttonArray) {
             for (JButton button : jButtons) {
@@ -53,11 +68,15 @@ public class ConnectFourModel {
         gameOver = false;
     }
 
+    /**
+     * Check the board for a four in a row.
+     */
     private void checkForWin() {
         if (plays < 7) {
             return;
         }
 
+        //TODO: change the method from a boolean to a void and just check the gameOver variable after??
         if (checkHorizontal()) {
             return;
         }
@@ -73,7 +92,15 @@ public class ConnectFourModel {
         }
     }
 
+    /**
+     * Check for a win in a row.
+     *
+     * Builds a string from each row that contains at least one marker and checks if it has a four in a row.
+     *
+     * @return boolean
+     */
     private boolean checkHorizontal() {
+        // start checking from the bottom row
         for (int row = buttonArray.length - 1; row >= highRow; row--) {
             StringBuilder rowString = new StringBuilder();
             for (int col = 0; col < buttonArray[row].length; col++) {
@@ -88,9 +115,18 @@ public class ConnectFourModel {
         return false;
     }
 
+    /**
+     * Check for a win in a column.
+     *
+     * Builds a string from each column and checks if it has a four in a row. We only start checking columns once one
+     * column has enough markers in it. (highRow will be 0, 1, or 2.)
+     *
+     * @return boolean
+     */
     private boolean checkVertical() {
         for (int col = 0; col < buttonArray[0].length; col++) {
             StringBuilder colString = new StringBuilder();
+            //noinspection ForLoopReplaceableByForEach
             for (int row = 0; row < buttonArray.length; row++) {
                 colString.append(buttonArray[row][col].getText());
             }
@@ -103,6 +139,12 @@ public class ConnectFourModel {
         return false;
     }
 
+    /**
+     * Check for a diagonal win.
+     *
+     * Builds a string from each possible diagonal and checks for four in a row. Skips double-checking diagonals by
+     * looking at the row that we're starting in and breaking the column loops if it's not the bottom row.
+     */
     private void checkDiagonals() {
         for (int row = buttonArray.length - 1; row >= 3; row--) {
             for (int col = 0; col < 4; col++) {
@@ -129,6 +171,13 @@ public class ConnectFourModel {
 
     }
 
+    /**
+     * @param rowStart row of cell to start with
+     * @param colStart column of cell to start with
+     * @param direction the direction to move in from the starting cell
+     *
+     * @return true if we found a four in a row
+     */
     private boolean checkDiagonal(final int rowStart, final int colStart, WinDirection direction) {
         int row = rowStart;
         int col = colStart;
@@ -146,11 +195,25 @@ public class ConnectFourModel {
         return false;
     }
 
+    /**
+     * Ensure the row and column are within bounds
+     * @param row value of row to check
+     * @param col value of column to check
+     *
+     * @return true if both row and col are within bounds
+     */
     private boolean validRowCol(final int row, final int col) {
         return (row >= 0 && row < buttonArray.length &&
                 col >= 0 && col < buttonArray[0].length);
     }
 
+    /**
+     * Change the background of the winning cells.
+     *
+     * @param row of starting cell
+     * @param col of starting cell
+     * @param direction to move in
+     */
     private void markWinningLine(int row, int col, WinDirection direction) {
         for (int cell = 0; cell < 4; cell++) {
             buttonArray[row][col].setBackground(Color.YELLOW);
